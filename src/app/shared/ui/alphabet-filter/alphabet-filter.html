@@ -1,1 +1,28 @@
-<p>alphabet-filter works!</p>
+<div class="az">
+  <div class="az__head">
+    <span class="az__title">Primera letra</span>
+    <button type="button" class="btn-recipe" (click)="clear()" [disabled]="!selected()">Quitar</button>
+  </div>
+
+  <div class="az__rail" role="toolbar" aria-label="Filtrar por primera letra">
+    @for (l of letters(); track l) {
+      <button
+        type="button"
+        class="chip"
+        [class.is-active]="selected() === l"
+        [attr.aria-pressed]="selected() === l"
+        (click)="choose(l)">
+        {{ l }}
+      </button>
+    }
+  </div>
+
+
+  <div class="u-progress-slot">
+    @if (busy()) {
+      <div class="u-progress u-progress--brand">
+        <div class="u-progress__bar"></div>
+      </div>
+    }
+  </div>
+</div>

@@ -5,23 +5,11 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/spec",
-    "target": "ES2022",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "baseUrl": "./",
-    "paths": {
-      "@core/*": ["src/app/core/*"],
-      "@state/*": ["src/app/state/*"],
-      "@shared/*": ["src/app/shared/*"],
-      "@features/*": ["src/app/features/*"]
-    },
-    "types": ["jest", "node"],
-    "esModuleInterop": true,
-    "resolveJsonModule": true
+    "types": ["jasmine", "node"]
   },
-  "include": [
-    "src/**/*.spec.ts",
-    "src/**/*.d.ts"
-  ]
+  "include": ["src/**/*.spec.ts", "src/**/*.d.ts"]
 }
+
+
+
 

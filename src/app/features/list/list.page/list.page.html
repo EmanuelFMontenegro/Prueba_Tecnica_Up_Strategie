@@ -13,10 +13,10 @@
           #nameInput
           [value]="name()"
           (input)="name.set(nameInput.value)"
-          class="w-full rounded-lg border px-3 py-2"
+          class="input input--grad-border"
           placeholder="Ej: Margarita, Mojito..."
         />
-        <button class="btn" (click)="onSearch()">Buscar</button>
+        <button class="btn btn-primary" (click)="onSearch()">Buscar</button>
       </div>
     </div>
 
@@ -25,19 +25,19 @@
       <select
         id="category"
         #catSel
-        class="w-full rounded-lg border px-3 py-2"
+        class="input input--grad-border"
         (change)="filterByCategory(catSel.value)"
       >
         <option value="">Todas las categorías</option>
         @for (c of categories(); track c) {
-        <option [value]="c">{{ c }}</option>
+        <option [value]="c" [selected]="c === 'Cocktail'">{{ c }}</option>
         }
       </select>
     </div>
 
     <div class="flex flex-col gap-1">
       <label class="text-sm font-medium">Tipo</label>
-      <select class="w-full rounded-lg border px-3 py-2" (change)="onTypeChange($event)">
+      <select class="input input--grad-border" (change)="onTypeChange($event)">
         <option value="">Todos</option>
         <option value="Alcoholic">Alcoholic</option>
         <option value="Non_Alcoholic">Non alcoholic</option>
@@ -45,98 +45,105 @@
     </div>
 
     <div class="flex flex-col gap-1">
-      <span class="text-sm font-medium">Primera letra</span>
-      <nav class="flex flex-wrap gap-2">
-        @for (l of
-        ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
-        track l) {
-        <button
-          class="h-9 w-9 rounded-lg border text-sm transition"
-          [class.bg-indigo-600]="firstLetter() === l.toLowerCase()"
-          [class.text-white]="firstLetter() === l.toLowerCase()"
-          (click)="onPickLetter(l.toLowerCase())"
+      <label class="text-sm font-medium">Primera letra</label>
+      <mat-form-field appearance="outline" class="w-full field field-letters">
+        <mat-select
+          #letterSel="matSelect"
+          [value]="firstLetter()"
+          (valueChange)="onPickLetter($event || null)"
+          panelClass="letters-select-panel"
+          placeholder="A-Z"
         >
-          {{ l }}
-        </button>
-        }
-      </nav>
+          <mat-select-trigger>
+            {{ firstLetter() ?? 'A–Z' }}
+          </mat-select-trigger>
+          <mat-option [value]="null">Quitar</mat-option>
+          @for (l of letters; track l) {
+          <mat-option [value]="l" class="letter-option">{{ l }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
     </div>
   </div>
 </section>
 
 <section class="overflow-hidden rounded-2xl border">
   <div class="bg-brand px-4 py-3">
-    <h3 class="text-base font-semibold text-white">Resultados</h3>
+    <h3 class="text-base font-semibold text-white">Listado de Cocktails</h3>
+  </div>
+  <div class="table-wrap">
+    <div class="overflow-x-auto bg-white/70">
+      <table class="w-full text-sm table">
+        <thead>
+          <tr class="thead-row">
+            <th class="th cell-id">ID</th>
+            <th class="th td-thumb">Imagen</th>
+            <th class="th cell-name">Nombre</th>
+            <th class="th cell-category">Categoría</th>
+            <th class="th cell-type">Tipo</th>
+            <th class="th cell-ingredients">Ingredientes</th>
+            <th class="th cell-date">Fecha Modificación</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y">
+          @if (visibleRows().length) { @for (c of visibleRows(); track c.id) {
+          <tr
+            app-cocktail-row
+            [c]="c"
+            [openIngredients]="openIngredients"
+            [allCocktails]="visibleRows()"
+          ></tr>
+
+          } } @else if (!loading()) {
+          <tr>
+            <td colspan="7" class="p-4 text-gray-500">Sin resultados</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    @if (tableMask()) {
+    <div class="table-mask">
+      <div class="mask-box">
+        <div class="dots" aria-hidden="true"><span></span><span></span><span></span></div>
+        Actualizando…
+      </div>
+    </div>
+    }
   </div>
 
-  <div class="overflow-x-auto bg-white/70">
-    <table class="w-full text-sm">
-      <thead>
-        <tr class="table-head">
-          <th class="p-3 text-left">ID</th>
-          <th class="p-3 text-left">Imagen</th>
-          <th class="p-3 text-left">Nombre</th>
-          <th class="p-3 text-left">Categoría</th>
-          <th class="p-3 text-left">Tipo</th>
-          <th class="p-3 text-left">Ingredientes</th>
-          <th class="p-3 text-left">Fecha Modificación</th>
-        </tr>
-      </thead>
+  <div class="px-4 py-3 bg-white flex items-center gap-3 border-t">
+    <span class="text-sm text-gray-600">Tamaño:</span>
+    <select
+      class="input input-inline input--grad-border"
+      [value]="pageSize()"
+      (change)="setPageSize(+$any($event.target).value)"
+    >
+      @for (s of pageSizes; track s) {
+      <option [value]="s">{{ s }}</option>
+      }
+    </select>
 
-      <tbody class="divide-y">
-        @if (loading()) {
-        <tr>
-          <td colspan="7" class="p-4 text-gray-500">Cargando…</td>
-        </tr>
-        } @else if (!cocktails().length) {
-        <tr>
-          <td colspan="7" class="p-4 text-gray-500">Sin resultados</td>
-        </tr>
-        } @else { @for (c of cocktails(); track c.id) {
-        <tr class="bg-white hover:bg-indigo-50/40 transition">
-          <td class="p-3">
-            <a [routerLink]="['/cocktail', c.id]" class="font-semibold text-indigo-700 underline">
-              {{ c.id }}
-            </a>
-          </td>
-
-          <td class="p-3">
-            @if (c.thumbUrl) {
-            <img [src]="c.thumbUrl!" alt="" class="h-10 w-10 rounded-md object-cover" />
-            }
-          </td>
-
-          <td class="p-3">{{ c.name }}</td>
-
-          <td class="p-3">
-            @if (c.category) {
-            <span class="badge badge-blue">{{ c.category }}</span>
-            } @else { — }
-          </td>
-
-          <td class="p-3">
-            <span
-              class="badge"
-              [ngClass]="{
-                'badge-red': isAlcoholic(c.alcoholic),
-                'badge-green': isNonAlcoholic(c.alcoholic)
-              }"
-            >
-              {{ c.alcoholic ?? '—' }}
-            </span>
-          </td>
-
-          <td class="p-3">
-            <button class="btn" (click)="openIngredients(c.id)">
-              {{ c.ingredients.length }} ingredientes
-            </button>
-          </td>
-
-          <td class="p-3">{{ c.dateModified ?? '—' }}</td>
-        </tr>
-        } }
-      </tbody>
-    </table>
+    <div class="pager ml-auto">
+      <button
+        class="btn btn-primary"
+        (click)="setPage(pageIndex() - 1)"
+        [disabled]="pageIndex() === 0"
+      >
+        « Anterior
+      </button>
+      <span class="stat"
+        >Página <strong>{{ pageIndex() + 1 }}</strong> de <strong>{{ pageCount() }}</strong></span
+      >
+      <button
+        class="btn btn-primary"
+        (click)="setPage(pageIndex() + 1)"
+        [disabled]="pageIndex() + 1 >= pageCount()"
+      >
+        Siguiente »
+      </button>
+    </div>
   </div>
 </section>
 

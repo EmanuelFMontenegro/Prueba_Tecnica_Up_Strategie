@@ -1,5 +1,3 @@
-/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
-/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
 {
   "compileOnSave": false,
   "compilerOptions": {
@@ -12,15 +10,17 @@
     "isolatedModules": true,
     "experimentalDecorators": true,
     "importHelpers": true,
+
     "target": "ES2022",
     "module": "preserve",
-
     "moduleResolution": "bundler",
-    "baseUrl": "./",
+
+    "baseUrl": ".",
     "paths": {
-      "@core/*": ["src/app/core/*"],
-      "@state/*": ["src/app/state/*"],
-      "@shared/*": ["src/app/shared/*"],
+      "@app/*":      ["src/app/*"],
+      "@core/*":     ["src/app/core/*"],
+      "@shared/*":   ["src/app/shared/*"],
+      "@state/*":    ["src/app/state/*"],
       "@features/*": ["src/app/features/*"]
     }
   },

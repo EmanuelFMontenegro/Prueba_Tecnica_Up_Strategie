@@ -1,19 +1,55 @@
+
+@use 'styles/utilities' as *;
+@use 'styles/tokens' as *;
+@use 'styles/components' as *;
+
+
+
 @use '@angular/material' as mat;
 
+@include mat.core();
 
-html{
+html {
   @include mat.theme((
-    color:(primary: mat.$azure-palette, tertiary: mat.$blue-palette),
-    typography: Roboto, density: 0,
+    color: (primary: mat.$azure-palette, tertiary: mat.$blue-palette),
+    typography: Roboto,
+    density: 0
   ));
 }
 
-:root{ color-scheme: light; }
-html,body{ height:100%; }
-body{
-  margin:0;
+:root {
+  color-scheme: light;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+body {
   background-color: var(--mat-sys-surface);
   color: var(--mat-sys-on-surface);
   font: var(--mat-sys-body-medium);
-  font-family: Roboto,"Helvetica Neue",sans-serif;
+}
+
+.mat-mdc-button-base {
+  border-radius: 0.5rem !important;
+}
+
+.mdc-button {
+  border-radius: 0.5rem !important;
+}
+
+.app-header {
+  background-image: var(--brand-grad) !important;
+  color: white !important;
+}
+
+.btn-solid {
+  background: linear-gradient(135deg, #7C3AED 0%, #2196F3 100%) !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 0.5rem !important;
+  padding: 0.5rem 1rem !important;
 }

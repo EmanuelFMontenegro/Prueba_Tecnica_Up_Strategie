@@ -1,30 +1,20 @@
-<header class="sticky top-0 z-40 text-white bg-gradient-to-r from-violet-600 to-sky-500">
-  <div class="mx-auto max-w-6xl px-4 py-3 flex items-center gap-3">
-    <div class="flex items-center gap-2 select-none">
-      <span class="text-2xl">🍸</span>
-      <span class="text-lg md:text-xl font-semibold tracking-wide">Cocktailz</span>
+
+  <header class="app-header">
+    <div class="container px-4 py-3 flex items-center gap-3">
+      <div class="flex items-center gap-3">
+        <span class="text-2xl">🍸</span>
+        <h1 class="text-xl font-bold select-none">Cocktailz</h1>
+      </div>
+
+
+      <nav class="ml-auto flex items-center gap-3">
+        <a routerLink="/" class="text-white transition hover:opacity-80 select-none">Inicio</a>
+        <button class="btn btn-primary" (click)="onRandom()">🎲 Random Cocktail</button>
+      </nav>
     </div>
+  </header>
 
-    <nav class="ml-auto flex items-center gap-1 sm:gap-2">
-      <a routerLink="/" [routerLinkActiveOptions]="{exact:true}"
-         routerLinkActive="bg-white/30"
-         class="px-3 py-1.5 rounded-lg bg-white/15 hover:bg-white/25 transition">Inicio</a>
-      <a routerLink="/detail" routerLinkActive="bg-white/30"
-         class="px-3 py-1.5 rounded-lg bg-white/15 hover:bg-white/25 transition">Detalle</a>
-
-      <!-- Botón Random global (requisito) -->
-      <button (click)="onRandom()"
-              class="ml-2 px-3 py-1.5 rounded-lg bg-white text-slate-900 hover:bg-slate-100 transition">
-        Random
-      </button>
-    </nav>
-  </div>
-</header>
-
-<main class="mx-auto max-w-6xl px-4 py-8">
+<main class="container px-4" style="padding-block: 2rem;">
   <router-outlet />
 </main>
 
-<footer class="mt-10 py-6 text-center text-xs text-slate-500">
-  Hecho con 🧉 Angular & Tailwind
-</footer>

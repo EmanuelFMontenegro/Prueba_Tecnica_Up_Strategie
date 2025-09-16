@@ -1,50 +1,73 @@
-
 <main class="p-4 max-w-5xl mx-auto space-y-6">
   @if (cocktail()) {
-    <article class="grid grid-cols-1 md:grid-cols-[180px,1fr] gap-6">
-      <figure>
-        @if (cocktail()?.thumbUrl) {
-          <img [src]="cocktail()!.thumbUrl!" alt="" class="w-44 h-44 md:w-48 md:h-48 rounded-xl object-cover">
-        }
-      </figure>
-
-      <section class="space-y-3">
-        <header>
-          <h1 class="text-2xl font-bold">{{ cocktail()!.name }}</h1>
-          <p class="text-sm text-gray-500 flex items-center gap-2">
-            <button class="underline" (click)="byCategoryClick(cocktail()?.category)">{{ cocktail()?.category ?? '—' }}</button>
+  <article class="card grid grid-cols-1 md:grid-cols-[180px,1fr] gap-6">
+    <figure>
+      @if (cocktail()?.thumbUrl) {
+      <img
+        [src]="cocktail()!.thumbUrl!"
+        alt="{{ cocktail()!.name }}"
+        class="w-44 h-44 md:w-48 md:h-48 rounded-xl object-cover"
+      />
+      }
+    </figure>
+    <section class="space-y-3">
+      <header class="flex items-start gap-4">
+        <div class="flex-1">
+          <h1 class="text-indigo-700">{{ cocktail()!.name }}</h1>
+          <p class="text-sm flex items-center gap-2 mt-1">
+            <button class="btn btn-primary" (click)="byCategoryClick(cocktail()?.category)">
+              {{ cocktail()?.category ?? '—' }}
+            </button>
             <span>•</span>
             <span>{{ cocktail()?.alcoholic ?? '—' }}</span>
           </p>
-        </header>
+        </div>
 
-        <nav class="flex gap-2">
-          <button class="px-3 py-1 rounded-md border hover:bg-gray-50" (click)="setLang('es')">🇪🇸 ES</button>
-          <button class="px-3 py-1 rounded-md border hover:bg-gray-50" (click)="setLang('en')">🇬🇧 EN</button>
-        </nav>
+        <div class="ml-auto flex items-center gap-3">
+          <button class="btn btn-primary" (click)="goBack()">← Volver</button>
+        </div>
+      </header>
 
-        <section>
-          <h2 class="font-semibold mb-1">Instrucciones</h2>
-          <p>
-            {{ lang()==='es' ? (cocktail()?.instructions?.es ?? '—') : (cocktail()?.instructions?.en ?? '—') }}
-          </p>
-        </section>
+      <nav class="flex gap-2">
+        <button
+          class="px-3 py-1 rounded-md border hover:bg-gray-50"
+          (click)="setLang('es')"
+          [class.font-semibold]="lang() === 'es'"
+          [attr.aria-pressed]="lang() === 'es'"
+        >
+          🇪🇸 ES
+        </button>
+        <button
+          class="px-3 py-1 rounded-md border hover:bg-gray-50"
+          (click)="setLang('en')"
+          [class.font-semibold]="lang() === 'en'"
+          [attr.aria-pressed]="lang() === 'en'"
+        >
+          🇬🇧 EN
+        </button>
+      </nav>
+
+      <section>
+        <h2 class="font-semibold">Instrucciones</h2>
+        <p>{{ instructions() }}</p>
       </section>
-    </article>
-
-    <section>
-      <h2 class="font-semibold mb-2">Ingredientes</h2>
-      <ul class="grid sm:grid-cols-2 gap-2">
-        @for (i of (cocktail()!.ingredients); track i.ingredient) {
-          <li class="flex items-center gap-3">
-            @if (i.imageUrl) { <img [src]="i.imageUrl!" class="h-8 w-8 rounded" alt=""> }
-            <span class="flex-1">{{ i.ingredient }}</span>
-            <span class="text-gray-500">{{ i.measure ?? '—' }}</span>
-          </li>
-        }
-      </ul>
     </section>
+  </article>
+
+  <section class="card">
+    <h2 class="font-semibold mb-2">Ingredientes</h2>
+    <ul role="list" class="grid sm:grid-cols-2 gap-2">
+      @for (i of (cocktail()!.ingredients); track i.ingredient) {
+      <li role="listitem" class="flex items-center gap-3 p-2 rounded-md bg-white border">
+        @if (i.imageUrl) {
+        <img [src]="i.imageUrl!" class="h-8 w-8 rounded" alt="{{ i.ingredient }}" /> }
+        <span class="flex-1 font-medium">{{ i.ingredient }}</span>
+        <span class="text-gray-500">{{ i.measure ?? '—' }}</span>
+      </li>
+      }
+    </ul>
+  </section>
   } @else {
-    <p class="text-gray-500">Cargando…</p>
+  <p class="text-gray-500">Cargando…</p>
   }
 </main>

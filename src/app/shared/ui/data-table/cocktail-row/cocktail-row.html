@@ -1,0 +1,55 @@
+<td class="td cell-id td-center">
+  <a [routerLink]="['/detail', c.id]">{{ c.id }}</a>
+</td>
+
+<td class="td td-thumb">
+  @defer (on viewport; prefetch on idle) { @if (c.thumbUrl) {
+  <img
+    class="thumb-img"
+    ngSrc="{{ c.thumbUrl! }}"
+    width="48"
+    height="48"
+    loading="lazy"
+    decoding="async"
+    alt="{{ c.name }}"
+  />
+  } @else {
+  <div class="thumb-img bg-gray-100 rounded"></div>
+  } } @placeholder {
+  <div class="thumb-img bg-gray-100 rounded"></div>
+  } @loading {
+  <div class="thumb-img bg-gray-100 rounded"></div>
+  } @error {
+  <div class="thumb-img bg-gray-100 rounded"></div>
+  }
+</td>
+<td class="td cell-name text-truncate" data-label="Nombre">{{ c.name }}</td>
+<td class="td cell-category td-center text-truncate">
+  @if (c.category) {
+  <button class="pill pill-blue pill-eq cursor-pointer" (click)="openCategory(c.category)">
+    {{ c.category }}
+  </button>
+  } @else { — }
+</td>
+<td class="td cell-type td-center">
+  @if (c.alcoholic) {
+  <span
+    class="pill pill-eq"
+    [ngClass]="{
+      'pill-red': isAlcoholic(c.alcoholic),
+      'pill-green': isNonAlcoholic(c.alcoholic),
+      'pill-orange': isOptionalAlcohol(c.alcoholic)
+    }"
+  >
+    {{ c.alcoholic }}
+  </span>
+  } @else { — }
+</td>
+<td class="td cell-ingredients td-center">
+  <button class="btn btn-primary" (click)="openIngredients(c.id)">
+    {{ c.ingredients.length }} ingredientes
+  </button>
+</td>
+<td class="td cell-date text-truncate" data-label="Fecha">
+  {{ c.dateModified ?? '—' }}
+</td>

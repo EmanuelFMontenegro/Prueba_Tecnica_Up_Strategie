@@ -1,12 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { CocktailsFacade } from '@state/cocktails/facade/cocktails.facade';
+import { CocktailsFacade } from '../../../state/cocktails/facade/cocktails.facade';
+
 
 @Component({
   selector: 'app-shell',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive, RouterOutlet],
+  imports: [CommonModule, RouterLink,RouterOutlet],
   templateUrl: './shell.component.html',
 })
 export class ShellComponent {

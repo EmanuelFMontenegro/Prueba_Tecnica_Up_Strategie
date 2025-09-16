@@ -19,5 +19,7 @@ export const CocktailsActions = createActionGroup({
     'Load One Success': props<{ item: Cocktail | null }>(),
     'Clear Selection': emptyProps(),
     'Error': props<{ error: string }>(),
+    'Clear Error': emptyProps(),
+
   },
 });
